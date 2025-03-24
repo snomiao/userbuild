@@ -7,14 +7,13 @@ import DIE from "phpdie";
  */
 export default async function userBuild(
   entrypoint: string,
-  extraArgs: string
-  // options: Omit<BuildConfig, "entrypoints" | "banner"> = {}
+  bunArgs: string
 ) {
   const banner =
     (await Bun.file(entrypoint).text()).match(
       "// ==UserScript==\n(//.*\n)+"
     )?.[0] || DIE(`no userscript meta found in ${entrypoint}`);
   return await $`bun build ${entrypoint} --banner=${banner} ${{
-    raw: extraArgs,
+    raw: bunArgs,
   }}`;
 }
