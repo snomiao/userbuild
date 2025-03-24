@@ -20,8 +20,11 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@types/yargs": "^17.0.33",
     "glob": "^11.0.1",
-    "phpdie": "^1.2.18"
+    "phpdie": "^1.2.18",
+    "sflow": "^1.19.1",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "typescript": "^5.8.2",
