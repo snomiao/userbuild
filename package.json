@@ -2,8 +2,12 @@
   "name": "userbuild",
   "version": "0.0.0",
   "description": "A cli tool to build *.user.ts into bundled *.user.js in a human readable style",
-  "keywords": ["bun", "userscript", "cli"],
-  "homepage": "http://#readme",
+  "keywords": [
+    "bun",
+    "userscript",
+    "cli"
+  ],
+  "homepage": "https://#readme",
   "license": "MIT",
   "author": "snomiao <snomiao@gmail.com>",
   "files": [
@@ -13,7 +17,7 @@
   "main": "index.js",
   "bin": "./cli.ts",
   "scripts": {
-    "build": "bun build index.ts --outdir=dist",
+    "build": "bun build index.ts --outdir=dist --target=bun",
     "prerelease": "bun run build && bun run test",
     "release": "bunx standard-version && git push --follow-tags && npm publish",
     "test": "bun test",
