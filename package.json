@@ -2,7 +2,7 @@
   "name": "userbuild",
   "version": "0.0.0",
   "description": "A cli tool to build *.user.ts into bundled *.user.js in a human readable style",
-  "keywords": [],
+  "keywords": ["bun", "userscript", "cli"],
   "homepage": "http://#readme",
   "license": "MIT",
   "author": "snomiao <snomiao@gmail.com>",
