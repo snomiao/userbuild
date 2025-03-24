@@ -1,0 +1,42 @@
+{
+  "name": "userbuild",
+  "version": "0.0.0",
+  "description": "To install dependencies:",
+  "keywords": [],
+  "homepage": "http://#readme",
+  "license": "MIT",
+  "author": "snomiao <snomiao@gmail.com>",
+  "files": [
+    "*.ts",
+    "dist"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "build": "bun build index.ts --outdir=dist && bun build:umd",
+    "build:umd": "bunx rollup dist/index.js --file dist/index.umd.js --format umd --name \"main\"",
+    "prerelease": "bun run build && bun run test",
+    "release": "bunx standard-version && git push --follow-tags && npm publish",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "glob": "^11.0.1",
+    "phpdie": "^1.2.18"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "@types/md5": "^2.3.5",
+    "md5": "^2.3.0",
+    "@types/bun": "^1.2.5",
+    "@types/jest": "^29.5.14"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.js",
+    "types": "./index.ts"
+  },
+  "module": "index.ts",
+  "types": "./index.ts"
+}
