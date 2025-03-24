@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import yargs from "yargs";
 import userBuild from ".";
 await yargs(process.argv.slice(2))

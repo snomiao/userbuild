@@ -11,6 +11,7 @@
     "dist"
   ],
   "main": "index.js",
+  "bin": "./cli.ts",
   "scripts": {
     "build": "bun build index.ts --outdir=dist && bun build:umd",
     "build:umd": "bunx rollup dist/index.js --file dist/index.umd.js --format umd --name \"main\"",
