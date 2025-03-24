@@ -1,6 +1,6 @@
 import userBuild from ".";
 it("works", async () => {
-  await userBuild("tests/example.user.ts");
+  await userBuild("tests/example.user.ts", "--outdir=tests");
   const code = await Bun.file("tests/example.user.js").text();
 
   expect(code).not.toContain("import md5 from 'md5';");
