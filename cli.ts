@@ -20,7 +20,7 @@ await yargs(process.argv.slice(2))
         .demandOption("file"),
     async (argv) => {
       console.log(argv);
-      await userBuild(argv.file, argv._.join(" ")).catch(() => null);
+      await userBuild(argv.file, argv._.join(" "));
       return;
     }
   )
