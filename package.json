@@ -1,7 +1,7 @@
 {
   "name": "userbuild",
   "version": "0.0.0",
-  "description": "To install dependencies:",
+  "description": "A cli tool to build *.user.ts into bundled *.user.js in a human readable style",
   "keywords": [],
   "homepage": "http://#readme",
   "license": "MIT",
