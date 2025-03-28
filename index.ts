@@ -7,7 +7,11 @@ import DIE from "phpdie";
  */
 export default async function userBuild(
   entrypoint: string,
-  options: { bunArgs?: string; formatBanner?: boolean } = {}
+  options: {
+    bunArgs?: string;
+    formatMeta?: boolean;
+    keepComments?: boolean;
+  } = {}
 ) {
   let banner =
     (await Bun.file(entrypoint).text()).match(
@@ -15,10 +19,12 @@ export default async function userBuild(
     )?.[0] || DIE(`no userscript meta found in ${entrypoint}`);
 
   // todo: format banner
-  if (options.formatBanner) {
-    throw new Error("formatBanner not implemented");
+  if (options.formatMeta) {
+    throw new Error("formatMeta not implemented");
   }
-
+  if (options.keepComments) {
+    throw new Error("keepComments not implemented");
+  }
 
   return await $`bun build ${entrypoint} --banner=${banner} ${{
     raw: options.bunArgs ?? "",

@@ -17,9 +17,17 @@ await yargs(process.argv.slice(2))
           type: "string",
           describe: "the .user.ts file to build",
         })
-        .demandOption("file"),
+        .demandOption("file")
+        .boolean("formatMeta")
+        .describe("formatMeta", "format script meta (WIP, ping me to speed up)")
+        .boolean("keepComments")
+        .describe("keepComments", "keep comments (WIP, ping me to speed up)"),
     async (argv) => {
-      await userBuild(argv.file, { bunArgs: argv._.join(" ") });
+      await userBuild(argv.file, {
+        bunArgs: argv._.join(" "),
+        formatMeta: argv.formatMeta,
+        keepComments: argv.keepComments,
+      });
       return;
     }
   )
