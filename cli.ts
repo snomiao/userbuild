@@ -19,7 +19,7 @@ await yargs(process.argv.slice(2))
         })
         .demandOption("file"),
     async (argv) => {
-      await userBuild(argv.file, argv._.join(" "));
+      await userBuild(argv.file, { bunArgs: argv._.join(" ") });
       return;
     }
   )
