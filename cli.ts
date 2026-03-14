@@ -52,10 +52,6 @@ await yargs(process.argv.slice(2))
           string: true,
           describe: "packages to exclude from bundle",
         })
-        .boolean("formatMeta")
-        .describe("formatMeta", "format script meta (WIP, ping me to speed up)")
-        .boolean("keepComments")
-        .describe("keepComments", "keep comments (WIP, ping me to speed up)")
         .boolean("meta")
         .describe("meta", "also write a .meta.js metadata-only stub for update checks"),
     async (argv) => {
@@ -66,8 +62,6 @@ await yargs(process.argv.slice(2))
         sourcemap: argv.sourcemap,
         format: argv.format,
         external: argv.external,
-        formatMeta: argv.formatMeta,
-        keepComments: argv.keepComments,
         meta: argv.meta,
       });
     }

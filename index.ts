@@ -8,10 +8,12 @@ type BuildOptions = Omit<
 >;
 
 type UserBuildOptions = BuildOptions & {
-  /** raw CLI args passthrough (escape hatch for new/unsupported Bun.build flags) */
+  /**
+   * Raw CLI args passthrough — escape hatch for Bun.build flags not yet in the JS API.
+   * NOTE: args are joined as a single string, so paths with spaces will break.
+   * TODO: refactor callers to pass string[] when bun shell adds safe array support.
+   */
   bunArgs?: string;
-  formatMeta?: boolean;
-  keepComments?: boolean;
   /** write a .meta.js metadata-only stub alongside the built .user.js */
   meta?: boolean;
 };
@@ -58,20 +60,12 @@ async function buildOne(
   entrypoint: string,
   options: UserBuildOptions
 ): Promise<BuildOutput> {
-  const { formatMeta, keepComments, bunArgs, meta, ...buildOptions } = options;
+  const { bunArgs, meta, ...buildOptions } = options;
 
   const banner =
     (await Bun.file(entrypoint).text()).match(
       /(\/\/ ==UserScript==[\s\S]*?\/\/ ==\/UserScript==\n?)/
     )?.[1] || DIE(`no userscript meta found in ${entrypoint}`);
-
-  // todo: format banner
-  if (formatMeta) {
-    throw new Error("formatMeta not implemented");
-  }
-  if (keepComments) {
-    throw new Error("keepComments not implemented");
-  }
 
   // fallback to CLI when raw bunArgs provided (escape hatch for new/unsupported flags)
   if (bunArgs) {
