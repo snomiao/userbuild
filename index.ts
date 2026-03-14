@@ -15,8 +15,8 @@ export default async function userBuild(
 ) {
   let banner =
     (await Bun.file(entrypoint).text()).match(
-      "// ==UserScript==\n(//.*\n)+"
-    )?.[0] || DIE(`no userscript meta found in ${entrypoint}`);
+      /(\/\/ ==UserScript==[\s\S]*?\/\/ ==\/UserScript==\n?)/
+    )?.[1] || DIE(`no userscript meta found in ${entrypoint}`);
 
   // todo: format banner
   if (options.formatMeta) {
