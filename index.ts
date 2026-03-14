@@ -85,6 +85,7 @@ async function buildOne(
   const result = await Bun.build({
     entrypoints: [entrypoint],
     banner,
+    format: "iife",
     ...buildOptions,
   });
 
