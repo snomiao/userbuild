@@ -55,7 +55,9 @@ await yargs(process.argv.slice(2))
         .boolean("formatMeta")
         .describe("formatMeta", "format script meta (WIP, ping me to speed up)")
         .boolean("keepComments")
-        .describe("keepComments", "keep comments (WIP, ping me to speed up)"),
+        .describe("keepComments", "keep comments (WIP, ping me to speed up)")
+        .boolean("meta")
+        .describe("meta", "also write a .meta.js metadata-only stub for update checks"),
     async (argv) => {
       await userBuild(argv.files, {
         outdir: argv.outdir,
@@ -66,6 +68,7 @@ await yargs(process.argv.slice(2))
         external: argv.external,
         formatMeta: argv.formatMeta,
         keepComments: argv.keepComments,
+        meta: argv.meta,
       });
     }
   )
