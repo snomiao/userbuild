@@ -44,7 +44,8 @@ await yargs(process.argv.slice(2))
         .option("format", {
           type: "string",
           choices: ["esm", "cjs", "iife"] as const,
-          describe: "output module format",
+          default: "iife" as const,
+          describe: "output module format (iife recommended for userscripts)",
         })
         .option("external", {
           type: "array",
