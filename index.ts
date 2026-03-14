@@ -12,6 +12,8 @@ type UserBuildOptions = BuildOptions & {
   bunArgs?: string;
   formatMeta?: boolean;
   keepComments?: boolean;
+  /** write a .meta.js metadata-only stub alongside the built .user.js */
+  meta?: boolean;
 };
 
 /**
@@ -56,7 +58,7 @@ async function buildOne(
   entrypoint: string,
   options: UserBuildOptions
 ): Promise<BuildOutput> {
-  const { formatMeta, keepComments, bunArgs, ...buildOptions } = options;
+  const { formatMeta, keepComments, bunArgs, meta, ...buildOptions } = options;
 
   const banner =
     (await Bun.file(entrypoint).text()).match(
@@ -78,6 +80,16 @@ async function buildOne(
     }}`.catch(() => {
       process.exit(1);
     });
+    if (meta) {
+      const outdirMatch = bunArgs.match(/--outdir=(\S+)/);
+      const outdir = outdirMatch?.[1] ?? ".";
+      const basename = entrypoint.replace(/.*\//, "").replace(/\.ts$/, ".js");
+      const metafile = `${outdir}/${basename}`.replace(/\.user\.js$/, ".meta.js");
+      await Bun.write(
+        metafile,
+        `${banner}\n// Metadata-only file for Tampermonkey/Violentmonkey update checks.\nvoid 0;\n`
+      );
+    }
     // return a minimal BuildOutput shape for compat
     return { success: true, outputs: [], logs: [] } as unknown as BuildOutput;
   }
@@ -93,6 +105,16 @@ async function buildOne(
       console.error(log);
     }
     process.exit(1);
+  }
+
+  if (meta) {
+    const outdir = buildOptions.outdir ?? ".";
+    const basename = entrypoint.replace(/.*\//, "").replace(/\.ts$/, ".js");
+    const metafile = `${outdir}/${basename}`.replace(/\.user\.js$/, ".meta.js");
+    await Bun.write(
+      metafile,
+      `${banner}\n// Metadata-only file for Tampermonkey/Violentmonkey update checks.\nvoid 0;\n`
+    );
   }
 
   return result;
