@@ -18,15 +18,20 @@ await yargs(process.argv.slice(2))
           describe: "the .user.ts file to build",
         })
         .demandOption("file")
-        .boolean("formatMeta")
-        .describe("formatMeta", "format script meta (WIP, ping me to speed up)")
-        .boolean("keepComments")
-        .describe("keepComments", "keep comments (WIP, ping me to speed up)"),
+        .option("format", {
+          type: "string",
+          default: "iife",
+          describe: "output format (iife recommended for userscripts)",
+        })
+        .boolean("meta")
+        .describe("meta", "also write a .meta.js metadata-only stub for update checks"),
     async (argv) => {
+      // NOTE: argv._ contains remaining args after '--'. They are joined as a string,
+      // which means paths with spaces will break. TODO: pass as array when bun shell supports it.
       await userBuild(argv.file, {
         bunArgs: argv._.join(" "),
-        formatMeta: argv.formatMeta,
-        keepComments: argv.keepComments,
+        format: argv.format,
+        meta: argv.meta,
       });
       return;
     }

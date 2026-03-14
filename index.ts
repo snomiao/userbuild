@@ -8,9 +8,11 @@ import DIE from "phpdie";
 export default async function userBuild(
   entrypoint: string,
   options: {
+    // NOTE: bunArgs is joined as a string and passed raw — paths with spaces will break.
+    // TODO: refactor to accept string[] for proper shell-safe argument passing.
     bunArgs?: string;
-    formatMeta?: boolean;
-    keepComments?: boolean;
+    format?: string;
+    meta?: boolean;
   } = {}
 ) {
   let banner =
@@ -18,18 +20,23 @@ export default async function userBuild(
       "// ==UserScript==\n(//.*\n)+"
     )?.[0] || DIE(`no userscript meta found in ${entrypoint}`);
 
-  // todo: format banner
-  if (options.formatMeta) {
-    throw new Error("formatMeta not implemented");
-  }
-  if (options.keepComments) {
-    throw new Error("keepComments not implemented");
-  }
-
-  return await $`bun build ${entrypoint} --banner=${banner} ${{
+  const result = await $`bun build ${entrypoint} --banner=${banner} --format=${options.format ?? "iife"} ${{
     raw: options.bunArgs ?? "",
   }}`.catch(() => {
     // BUN will print error message
     process.exit(1);
   });
+
+  if (options.meta) {
+    const outdirMatch = (options.bunArgs ?? "").match(/--outdir=(\S+)/);
+    const outdir = outdirMatch?.[1] ?? ".";
+    const basename = entrypoint.replace(/.*\//, "").replace(/\.ts$/, ".js");
+    const metafile = `${outdir}/${basename}`.replace(/\.user\.js$/, ".meta.js");
+    await Bun.write(
+      metafile,
+      `${banner}\n// Metadata-only file for Tampermonkey/Violentmonkey update checks.\nvoid 0;\n`
+    );
+  }
+
+  return result;
 }
